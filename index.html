@@ -3,14 +3,20 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Backbone Demo</title>
+		<title>Backbone Contacts Demo</title>
 		<link rel="stylesheet" href="css/styles.css"/>
 	</head>
 	<body>
 		<div id="contacts"></div>
 
 		<script id="contactTemplate" type="text/template">
-			<img src
+			<img src="<%= photo %>" alt="<%= name %>" />
+			<h1><%= name %><span><%= type %></span></h1>
+			<div><%= address %></div>
+			<dl>
+				<dt>Tel:</dt><dd><%= tel %></dd>
+				<dt>Email:</dt><dd><a href="mailto:<%= email %>"><%= email %></a></dd>
+			</dt>
 		</script>
 
 		<!-- Scripts -->
