@@ -93,7 +93,7 @@
 			if (this.filterType === "All") {
 				this.collection.reset(contacts);
 
-				<b>contactsRouter.navigate("filter/all");</b>
+				contactsRouter.navigate("filter/all");
 
 			} else {
 				this.collection.reset(contacts, { silent: true });
@@ -105,7 +105,7 @@
 
 				this.collection.reset(filtered);
 
-				<b>contactsRouter.navigate("filter/" + filterType);</b>
+				contactsRouter.navigate("filter/" + filterType);
 			}
 		}
 	});
