@@ -13,7 +13,12 @@
 
 	var Contact = Backbone.Model.extend({
 		defaults: {
-			photo: "img/placeholder.png"
+			photo: "img/placeholder.png",
+			name: "",
+			address: "",
+			tel: "",
+			email: "",
+			type: ""
 		}
 	});
 
@@ -25,19 +30,40 @@
 		tagName: "article",
 		className: "contact-container",
 		template: $("#contactTemplate").html(),
+		events: {
+			"click button.delete": "deleteContact",
+			"click button.edit": "editContact",
+			"change select.type": "addType",
+			"click button.save": "saveEdits",
+			"click button.cancel": "cancelEdit"
+		},
 
 		render: function () {
 			var tmpl = _.template(this.template);
 
 			this.$el.html(tmpl(this.model.toJSON()));
 			return this;
+		},
+
+		deleteContact: function () {
+			var removedType = this.model.get("type").toLowerCase();
+
+			this.model.destroy();
+
+			this.remove();
+
+			if (_.indexOf(directory.getTypes(), removedType) === -1) {
+				directory.$el.find("#filter select").children("[value='" + removedType + "']").remove();
+			}
 		}
 	});
 
 	var DirectoryView = Backbone.View.extend({
 		el: $("#contacts"),
 		events: {
-			"change #filter select": "setFilter"
+			"change #filter select": "setFilter",
+			"click #add": "addContact",
+			"click #showForm": "showForm"
 		},
 
 		initialize: function () {
@@ -46,6 +72,8 @@
 			this.$el.find("#filter").append(this.createSelect());
 			this.on("change:filterType", this.filterByType, this);
 			this.collection.on("reset", this.render, this);
+			this.collection.on("add", this.renderContact, this);
+			this.collection.on("remove", this.removeContact, this);
 		},
 
 		render: function () {
@@ -107,6 +135,44 @@
 
 				contactsRouter.navigate("filter/" + filterType);
 			}
+		},
+
+		addContact: function (e) {
+			e.preventDefault();
+
+			var formData = {};
+			$("#addContact").children("input").each(function (i, el) {
+				if ($(el).val() !== "") {
+					formData[el.id] = $(el).val();
+				}
+			});
+
+			contacts.push(formData);
+
+			if (_.indexOf(this.getTypes(), formData.type) === -1) {
+				this.collection.add(new Contact(formData));
+				this.$el.find("#filter").find("select").remove().end().append(this.createSelect());
+			} else {
+				this.collection.add(new Contact(formData));
+			}
+		},
+
+		removeContact: function (removedModel) {
+			var removed = removedModel.attributes;
+
+			if (removed.photo === "img/placeholder.png") {
+				delete removed.photo;
+			}
+
+			_.each(contacts, function (contact) {
+				if (_.isEqual(contact, removed)) {
+					contacts.splice(_.indexOf(contacts, contact), 1);
+				}
+			});
+		},
+
+		showForm: function () {
+			this.$el.find("#addContact").slideToggle();
 		}
 	});
 

@@ -10,6 +10,16 @@
 		<div id="contacts">
 			<header>
 				<div id="filter"><label>Filter by: </label></div>
+				<a id="showForm" href="#">Add new contact</a>
+				<form id="addContact" action="#">
+					<label for="photo">Photo:</label><input id="photo" type="file" />
+					<label for="name">Name:</label><input id="name" />
+					<label for="type">Type:</label><input id="type"/>
+					<label for="address">Address:</label><input id="address" />
+					<label for="tel">Tel:</label><input id="tel" />
+					<label for="email">Email:</label><input id="email" />
+					<button id="add">Add:</button>
+				</form>
 			</header>
 		</div>
 
@@ -20,7 +30,22 @@
 			<dl>
 				<dt>Tel:</dt><dd><%= tel %></dd>
 				<dt>Email:</dt><dd><a href="mailto:<%= email %>"><%= email %></a></dd>
-			</dt>
+			</dl>
+			<button class="delete">Delete</button>
+			<button class="edit">Edit</button>
+		</script>
+
+		<script id="contactEditTemplate" type="text/template">
+			<form action="#">
+				<input type="file" value="<%= photo %>" />
+				<input type="name" value="<%= name %>" />
+				<input type="type" type="hidden" value="<%= type %>" />
+				<input type="address" value="<%= address %>" />
+				<input type="tel" value="<%= tel %>" />
+				<input type="email" value="<%= email %>" />
+				<button class="save">Save</button>
+				<button class="cancel">Cancel</button>
+			</form>
 		</script>
 
 		<!-- Scripts -->
