@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Backbone Contacts Demo</title>
+		<link rel="stylesheet" href="css/styles.css"/>
+		<!-- Load the script "js/main.js" as our entry point -->
+		<script data-main="js/main" src="js/libs/amd/requirejs/require.js"></script>
+	</head>
+	<body>
+		<div id="contacts">
+			<header>
+				<div id="filter"><label>Filter by: </label></div>
+				<a id="showForm" href="#">Add new contact</a>
+				<form id="addContact" action="#">
+					<label for="photo">Photo:</label><input id="photo" type="file" />
+					<label for="name">Name:</label><input id="name" />
+					<label for="type">Type:</label><input id="type"/>
+					<label for="address">Address:</label><input id="address" />
+					<label for="tel">Tel:</label><input id="tel" />
+					<label for="email">Email:</label><input id="email" />
+					<button id="add">Add</button>
+				</form>
+			</header>
+		</div>
+	</body>
+</html>
