@@ -1,8 +1,8 @@
 define([
 	'jquery',
-	'underscore',
-	'backbone'
-], function ($, _, Backbone) {
+	'backbone',
+	'collections/contact'
+], function ($, Backbone, Contact) {
 
 	var AppRouter = Backbone.Router.extend({
 		routes: {
@@ -10,18 +10,11 @@ define([
 		},
 
 		urlFilter: function (type) {
-			directory.filterType = type;
-			directory.trigger("change:filterType");
+			Contact.filterType = type;
+			Contact.trigger("change:filterType");
 		}
 	});
 
-	var initialize = function () {
-		var appRouter = new AppRouter();
-		Backbone.history.start();
-	};
-
-	return {
-		initialize: initialize
-	}
+	return AppRouter
 	
 });
