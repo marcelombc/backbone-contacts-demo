@@ -1,13 +1,13 @@
 define([
 	'backbone',
-	'lib/backbone/localstorage',
+	'libs/backbone/localstorage',
 	'models/contact'
-], function (Backbone, Contact, Store) {
+], function (Backbone, Store, Contact) {
 	var ContactsCollection = Backbone.Collection.extend({
 		model: Contact
 
 		//localStorage: new Store('contacts-backbone');
 	});
 
-	return new ContactsCollection();
+	return ContactsCollection;
 });

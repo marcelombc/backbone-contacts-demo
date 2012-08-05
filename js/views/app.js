@@ -4,8 +4,9 @@ define([
 	'backbone',
 	'collections/contact',
 	'views/contact',
-	'text!templates/contact.html'
-], function ($, _, Backbone, ContactsCollection, ContactView, contactTemplate) {
+	'text!templates/contact.html',
+	'models/data'
+], function ($, _, Backbone, ContactsCollection, ContactView, contactTemplate, contacts) {
 	
 	var AppView = Backbone.View.extend({
 		el: $("#contacts"),
@@ -16,18 +17,19 @@ define([
 		},
 
 		initialize: function () {
+			this.collection = new ContactsCollection(contacts);
 			this.render();
 			this.$el.find("#filter").append(this.createSelect());
 			this.on("change:filterType", this.filterByType, this);
-			ContactsCollection.on("reset", this.render, this);
-			ContactsCollection.on("add", this.renderContact, this);
-			ContactsCollection.on("remove", this.removeContact, this);
+			this.collection.on("reset", this.render, this);
+			this.collection.on("add", this.renderContact, this);
+			this.collection.on("remove", this.removeContact, this);
 		},
 
 		render: function () {
 			this.$el.find("article").remove();
 
-			_.each(ContactsCollection.models, function (item) {
+			_.each(this.collection.models, function (item) {
 				this.renderContact(item);
 			}, this);
 		},
@@ -40,7 +42,7 @@ define([
 		},
 
 		getTypes: function () {
-			return _.uniq(ContactsCollection.pluck("type"), false, function (type) {
+			return _.uniq(this.collection.pluck("type"), false, function (type) {
 				return type.toLowerCase();
 			});
 		},
@@ -67,19 +69,19 @@ define([
 
 		filterByType: function () {
 			if (this.filterType === "All") {
-				ContactsCollection.reset(contacts);
+				this.collection.reset(contacts);
 
 				contactsRouter.navigate("filter/all");
 
 			} else {
-				ContactsCollection.reset(contacts, { silent: true });
+				this.collection.reset(contacts, { silent: true });
 
 				var filterType = this.filterType,
-					filtered = _.filter(ContactsCollection.models, function (item) {
+					filtered = _.filter(this.collection.models, function (item) {
 						return item.get("type").toLowerCase() === filterType;
 					});
 
-				ContactsCollection.reset(filtered);
+				this.collection.reset(filtered);
 
 				contactsRouter.navigate("filter/" + filterType);
 			}
@@ -98,10 +100,10 @@ define([
 			contacts.push(formData);
 
 			if (_.indexOf(this.getTypes(), formData.type) === -1) {
-				ContactsCollection.add(new Contact(formData));
+				this.collection.add(new Contact(formData));
 				this.$el.find("#filter").find("select").remove().end().append(this.createSelect());
 			} else {
-				ContactsCollection.add(new Contact(formData));
+				this.collection.add(new Contact(formData));
 			}
 		},
 
