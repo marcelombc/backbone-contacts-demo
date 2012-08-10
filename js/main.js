@@ -20,7 +20,7 @@ require.config({
 require([
 	'views/app',
 	'router/router'
-], function (AppView, Router) {
+], function (AppView, AppRouter) {
 	// Initialize routing and start Backbone.history()
 	new AppRouter();
 	Backbone.history.start();

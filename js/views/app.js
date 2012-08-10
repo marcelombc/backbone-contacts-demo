@@ -4,9 +4,8 @@ define([
 	'backbone',
 	'collections/contact',
 	'views/contact',
-	'text!templates/contact.html',
 	'models/data'
-], function ($, _, Backbone, ContactsCollection, ContactView, contactTemplate, contacts) {
+], function ($, _, Backbone, ContactsCollection, ContactView, contacts) {
 	
 	var AppView = Backbone.View.extend({
 		el: $("#contacts"),

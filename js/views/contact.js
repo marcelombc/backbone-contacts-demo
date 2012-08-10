@@ -8,8 +8,8 @@ define([
 	var ContactView = Backbone.View.extend({
 		tagName: "article",
 		className: "contact-container",
-		template: _.template(contactTemplate, this.model.toJSON()),
-		editTemplate: _.template(editTemplate, this.model.toJSON()),
+		template: _.template(contactTemplate),
+		editTemplate: _.template(editTemplate),
 		events: {
 			"click button.delete": "deleteContact",
 			"click button.edit": "editContact",
@@ -19,7 +19,7 @@ define([
 		},
 
 		render: function () {
-			this.$el.append(this.template);
+			this.$el.html(this.template(this.model.toJSON()));
 			return this;
 		},
 
@@ -36,7 +36,7 @@ define([
 		},
 
 		editContact: function () {
-			this.$el.append(this.editTemplate);
+			this.$el.html(this.editTemplate(this.model.toJSON()));
 
 			var newOpt = $("<option/>", {
 				html: "<em>Add new...</em>",
